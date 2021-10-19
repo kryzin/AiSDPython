@@ -57,7 +57,7 @@ class LinkedList:
             self.head = self.head.next
             return temp.value
 
-    def remove_last(self):
+    def remove_last(self):  # delete last node
         slast = self.head
         while slast.next.next:
             slast = slast.next
@@ -65,9 +65,9 @@ class LinkedList:
         slast.next = None
         return temp.value
 
-    def remove(self, after):
+    def remove(self, after):  # delete node after given index
         current = self.head
-        for _ in range(after):
+        for _ in range(after + 1):
             prev_node = current
             current = current.next
         temp = current
@@ -75,11 +75,18 @@ class LinkedList:
         current = None
         return temp.value
 
-    def listprint(self):
-        printval = self.head
-        while printval is not None:
-            print(printval.value)
-            printval = printval.next
+    def listprint(self):  # print out list
+        printf = self.head
+        while printf is not None:
+            print(printf.value)
+            printf = printf.next
+
+    def print(self):
+        temp = self.head
+        while temp:
+            print(temp.value, " -> ", end = '')
+            temp = temp.next
+        print("")
 
 
 list_ = LinkedList()
@@ -93,8 +100,6 @@ print("----------------")
 list_.insert(30, 2)
 list_.listprint()
 print("----------------")
-print("usuniety: ", list_.remove(2))
-list_.listprint()
-
+list_.print()
 
 
