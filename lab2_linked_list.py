@@ -41,14 +41,39 @@ class LinkedList:
             current_node = current_node.next
         return current_node.value
 
-    def insert(self, value=Any, after=None):
-        if after is None:
-            return
+    def insert(self, value, after):  # insert after given index
+        i = 1
+        current = self.head
+        while i < after and current is not None:
+            current = current.next
+            i += 1
+        temp = Node(value)
+        temp.next = current.next
+        current.next = temp
 
-        new_node = Node(value)
-        prev_node = Node(after)
-        new_node.next = prev_node.next
-        prev_node.next = new_node
+    def pop(self):  # delete and output first element
+        if self.head is not None:
+            temp = self.head
+            self.head = self.head.next
+            return temp.value
+
+    def remove_last(self):
+        slast = self.head
+        while slast.next.next:
+            slast = slast.next
+        temp = slast.next
+        slast.next = None
+        return temp.value
+
+    def remove(self, after):
+        current = self.head
+        for _ in range(after):
+            prev_node = current
+            current = current.next
+        temp = current
+        prev_node.next = current.next
+        current = None
+        return temp.value
 
     def listprint(self):
         printval = self.head
@@ -61,12 +86,15 @@ list_ = LinkedList()
 list_.head = Node(2)
 e2 = Node(120)
 e3 = Node(10)
-
 list_.head.next = e2
 e2.next = e3
 list_.listprint()
 print("----------------")
-middle_node = list_.node(1)
-list_.insert(value=30, after=middle_node)
-# assert str(list_) == '2 -> 120 -> 30 -> 10'
+list_.insert(30, 2)
 list_.listprint()
+print("----------------")
+print("usuniety: ", list_.remove(2))
+list_.listprint()
+
+
+
