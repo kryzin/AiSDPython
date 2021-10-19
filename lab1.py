@@ -81,3 +81,30 @@
 # print(krotka8)
 
 
+# zad9
+
+# week = {1: 'Poniedziałek', 2: 'Wtorek', 3: 'Środa',
+#         4: 'Czwartek', 5: 'Piątek', 6: 'Sobota', 7: 'Niedziela'}
+#
+#
+# def zad9(a: int):
+#     return week.get(a)
+#
+#
+# print(zad9(5))
+
+
+# zad10
+
+
+# def zad10(a: str):
+#     return a == a[::-1]
+#
+#
+# print(zad10('pasap'))
+
+
+
+
+
+
