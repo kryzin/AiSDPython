@@ -75,18 +75,13 @@ class LinkedList:
         current = None
         return temp.value
 
-    def listprint(self):  # print out list
-        printf = self.head
-        while printf is not None:
-            print(printf.value)
-            printf = printf.next
-
-    def print(self):
-        temp = self.head
-        while temp:
-            print(temp.value, " -> ", end = '')
-            temp = temp.next
-        print("")
+    def __str__(self):
+        cur = self.head
+        out = ""
+        while cur:
+            out += str(cur.value) + "->"
+            cur = cur.next
+        return out[:-2]
 
 
 list_ = LinkedList()
