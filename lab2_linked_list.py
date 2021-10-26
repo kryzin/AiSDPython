@@ -21,7 +21,7 @@ class LinkedList:
     def append(self, value=Any):  # adds at the end
         new_node = Node(value)
         last_elem = self.head
-        while last_elem.next:  # search for last element
+        while last_elem.next:
             last_elem = last_elem.next
         last_elem.next = new_node
 
@@ -33,23 +33,21 @@ class LinkedList:
             current = current.next
         return length
 
-    def node(self, at: int):  # output value of input index
-        if at > self.len() - 1:
-            return "out of range"  # index is too big
-        current_node = self.head
-        for n in range(at):
-            current_node = current_node.next
-        return current_node.value
+    def node(self, at: int):  # output node of input index
+        current = self.head
+        i = 0
+        while current:
+            if i == at:
+                return current
+            i += 1
+            current = current.next
 
     def insert(self, value, after):  # insert after given index
-        i = 1
-        current = self.head
-        while i < after and current is not None:
-            current = current.next
-            i += 1
-        temp = Node(value)
-        temp.next = current.next
-        current.next = temp
+        if after is None:
+            return
+        new_node = Node(value)
+        new_node.next = after.next
+        after.next = new_node
 
     def pop(self):  # delete and output first element
         if self.head is not None:
@@ -57,44 +55,57 @@ class LinkedList:
             self.head = self.head.next
             return temp.value
 
-    def remove_last(self):  # delete last node
-        slast = self.head
-        while slast.next.next:
-            slast = slast.next
-        temp = slast.next
-        slast.next = None
-        return temp.value
+    def remove_last(self):  # delete last node and output it
+        if self.head is None:
+            return
+        if self.head.next is None:
+            self.head = None
+            return
+        prev_last = self.head
+        while (prev_last.next.next):
+            prev_last = prev_last.next
+        prev_last.next = None
+        return prev_last
 
-    def remove(self, after):  # delete node after given index
-        current = self.head
-        for _ in range(after + 1):
-            prev_node = current
-            current = current.next
-        temp = current
-        prev_node.next = current.next
-        current = None
-        return temp.value
+    def remove(self, after):  # delete node after given node
+        prev = self.head
+        curr = prev.next
+        while prev is not None:
+            if prev == after:
+                prev.next = curr.next
+                return curr
+            prev = prev.next
+            curr = curr.next
 
-    def __str__(self):
+    def __str__(self):  # print out linked list
         cur = self.head
         out = ""
         while cur:
-            out += str(cur.value) + "->"
+            out += str(cur.value) + " -> "
             cur = cur.next
-        return out[:-2]
+        out = out.strip(" -> ")
+        return out
 
 
 list_ = LinkedList()
-list_.head = Node(2)
-e2 = Node(120)
-e3 = Node(10)
-list_.head.next = e2
-e2.next = e3
-list_.listprint()
-print("----------------")
-list_.insert(30, 2)
-list_.listprint()
-print("----------------")
-list_.print()
-
+assert list_.head == None
+list_.push(1)
+list_.push(0)
+assert str(list_) == '0 -> 1'
+list_.append(9)
+list_.append(10)
+assert str(list_) == '0 -> 1 -> 9 -> 10'
+middle_node = list_.node(at=1)
+list_.insert(5, after=middle_node)
+assert str(list_) == '0 -> 1 -> 5 -> 9 -> 10'
+first_element = list_.node(at=0)
+returned_first_element = list_.pop()
+assert first_element.value == returned_first_element
+last_element = list_.node(at=3)
+returned_last_element = list_.remove_last()
+#assert last_element.value == returned_last_element
+assert str(list_) == '1 -> 5 -> 9'
+second_node = list_.node(at=1)
+list_.remove(second_node)
+assert str(list_) == '1 -> 5'
 
