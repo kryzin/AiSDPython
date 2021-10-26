@@ -1,4 +1,3 @@
-# lista jednokierunkowa
 from typing import Any
 
 
@@ -7,7 +6,7 @@ class Node:
         self.value = value
         self.next = None
 
-
+# lista jednokierunkowa
 class LinkedList:
     def __init__(self):
         self.head = None
@@ -109,7 +108,7 @@ class LinkedList:
 # list_.remove(second_node)
 # assert str(list_) == '1 -> 5'
 
-
+# Stos LIFO
 class Stack:
     _storage: LinkedList
 
@@ -117,7 +116,7 @@ class Stack:
         self.head = None
         self.size = 0
 
-    def __str__(self):
+    def __str__(self):  # output in a column
         curr = self.head
         out = ""
         while curr:
@@ -158,7 +157,7 @@ class Stack:
 # assert top_value == 1
 # assert len(stack) == 2
 
-
+# Kolejka FIFO
 class Queue:
     _storage: LinkedList
 
@@ -166,10 +165,10 @@ class Queue:
         self.head = self.tail = None
         self.size = 0
 
-    def peek(self):
+    def peek(self):  # output first element
         return self.head
 
-    def enqueue(self, element):
+    def enqueue(self, element):  # add new element at the end
         new_node = Node(element)
         if self.tail is None:
             self.head = self.tail = new_node
@@ -179,14 +178,14 @@ class Queue:
         self.tail = new_node
         self.size += 1
 
-    def dequeue(self):
+    def dequeue(self):  # return and delete first element
         if self.head is not None:
             temp = self.head
             self.head = self.head.next
             self.size -= 1
             return temp.value
 
-    def __str__(self):
+    def __str__(self):  # output queue
         curr = self.head
         out = ""
         while curr:
@@ -195,19 +194,19 @@ class Queue:
         out = out.strip(", ")
         return out
 
-    def __len__(self):  # length of list
+    def __len__(self):  # length
         return self.size
 
-queue = Queue()
-assert len(queue) == 0
-queue.enqueue('klient1')
-queue.enqueue('klient2')
-queue.enqueue('klient3')
-assert str(queue) == 'klient1, klient2, klient3'
-client_first = queue.dequeue()
-assert client_first == 'klient1'
-assert str(queue) == 'klient2, klient3'
-assert len(queue) == 2
+# queue = Queue()
+# assert len(queue) == 0
+# queue.enqueue('klient1')
+# queue.enqueue('klient2')
+# queue.enqueue('klient3')
+# assert str(queue) == 'klient1, klient2, klient3'
+# client_first = queue.dequeue()
+# assert client_first == 'klient1'
+# assert str(queue) == 'klient2, klient3'
+# assert len(queue) == 2
 
 
 
