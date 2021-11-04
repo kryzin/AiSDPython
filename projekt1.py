@@ -55,16 +55,13 @@ class LinkedList:
             return temp.value
 
     def remove_last(self):  # delete last node and output it
-        if self.head is None:
-            return
-        if self.head.next is None:
-            self.head = None
-            return
-        prev_last = self.head
-        while (prev_last.next.next):
-            prev_last = prev_last.next
-        prev_last.next = None
-        return prev_last
+        if self.head is not None:
+            prev_node = self.head
+            while (prev_node.next.next):
+                prev_node = prev_node.next
+            temp = prev_node.next
+            prev_node.next = None
+            return temp
 
     def remove(self, after):  # delete node after given node
         prev = self.head
@@ -90,7 +87,7 @@ class LinkedList:
 # assert list_.head == None
 # list_.push(1)
 # list_.push(0)
-# assert str(list_) == '0 -> 1'
+# # assert str(list_) == '0 -> 1'
 # list_.append(9)
 # list_.append(10)
 # assert str(list_) == '0 -> 1 -> 9 -> 10'
@@ -102,7 +99,7 @@ class LinkedList:
 # assert first_element.value == returned_first_element
 # last_element = list_.node(at=3)
 # returned_last_element = list_.remove_last()
-# assert last_element.value == returned_last_element
+# assert last_element == returned_last_element
 # assert str(list_) == '1 -> 5 -> 9'
 # second_node = list_.node(at=1)
 # list_.remove(second_node)
