@@ -15,19 +15,19 @@ class BinaryTree:
     def traverse_pre_order(self, visit: Callable[[Any], None]) -> None:
         self.root.traverse_pre_order(visit)
 
-    def show(self) -> None:
-        g = tr.Tree()
+    def show(self) -> None:  # left is above right
+        tre = tr.Tree()
 
-        g.create_node(str(self.root.value), str(self.root.value))
+        tre.create_node(str(self.root.value), str(self.root.value))
 
-        def add_edge(node: 'BinaryNode') -> None:
-            if node.left_child is not None:
-                g.create_node(str(node.left_child.value), str(node.left_child.value), parent=str(node.value))
+        def add(node: 'BinaryNode') -> None:
             if node.right_child is not None:
-                g.create_node(str(node.right_child.value), str(node.right_child.value), parent=str(node.value))
+                tre.create_node(str(node.right_child.value), str(node.right_child.value), parent=str(node.value))
+            if node.left_child is not None:
+                tre.create_node(str(node.left_child.value), str(node.left_child.value), parent=str(node.value))
 
-        self.traverse_pre_order(add_edge)
-        g.show()
+        self.traverse_pre_order(add)
+        tre.show()
 
     def __init__(self, value: Optional = None, root: BinaryNode = None) -> None:
         if root is None:
@@ -36,22 +36,37 @@ class BinaryTree:
             self.root = root
 
 
-x: BinaryNode = BinaryNode(10)
-x.add_left_child(9)
-x.add_right_child(2)
-x.left_child.add_left_child(1)
-x.left_child.add_right_child(3)
-x.right_child.add_left_child(4)
-x.right_child.add_right_child(6)
+def left_line(tree: BinaryTree):
+    lista = []
+    current = tree.root
+    while current is not None:
+        lista.append(current.value)
+        current = current.left_child
+    return lista
 
-tree: BinaryTree = BinaryTree(root=x)
+
+# tree = BinaryTree(10)
+# assert tree.root.value == 10
+#
+# tree.root.add_right_child(2)
+# tree.root.right_child.add_right_child(3)
+# assert tree.root.right_child.value == 2
+# assert tree.root.right_child.is_leaf() is False
+#
+# tree.root.add_left_child(13)
+# tree.root.left_child.add_left_child(1)
+# assert tree.root.left_child.left_child.value == 1
+# assert tree.root.left_child.left_child.is_leaf() is True
+
+tree = BinaryTree(1)
+tree.root.add_left_child(2)
+tree.root.add_right_child(3)
+tree.root.left_child.add_left_child(4)
+tree.root.left_child.add_right_child(5)
+tree.root.right_child.add_right_child(7)
+tree.root.left_child.left_child.add_left_child(8)
+tree.root.left_child.left_child.add_right_child(9)
 
 tree.show()
+print(left_line(tree))
 
-assert tree.root.value == 10
-
-assert tree.root.right_child.value == 2
-assert tree.root.right_child.is_leaf() is False
-
-assert tree.root.left_child.left_child.value == 1
-assert tree.root.left_child.left_child.is_leaf() is True
