@@ -1,6 +1,6 @@
 from typing import Any, Callable, Optional
 from projekt2.BinaryNode import BinaryNode
-import treelib as tr
+import treelib
 
 
 class BinaryTree:
@@ -16,18 +16,17 @@ class BinaryTree:
         self.root.traverse_pre_order(visit)
 
     def show(self) -> None:  # left is above right
-        tre = tr.Tree()
+        t = treelib.Tree()  # implement in imported library
+        t.create_node(str(self.root.value), str(self.root.value))  # input tree root into Tree class
 
-        tre.create_node(str(self.root.value), str(self.root.value))
-
-        def add(node: 'BinaryNode') -> None:
+        def add(node: 'BinaryNode') -> None:  # function to input children of current node
             if node.right_child is not None:
-                tre.create_node(str(node.right_child.value), str(node.right_child.value), parent=str(node.value))
+                t.create_node(str(node.right_child.value), str(node.right_child.value), parent=str(node.value))
             if node.left_child is not None:
-                tre.create_node(str(node.left_child.value), str(node.left_child.value), parent=str(node.value))
+                t.create_node(str(node.left_child.value), str(node.left_child.value), parent=str(node.value))
 
-        self.traverse_pre_order(add)
-        tre.show()
+        self.traverse_pre_order(add)  # input children of all nodes
+        t.show()
 
     def __init__(self, value: Optional = None, root: BinaryNode = None) -> None:
         if root is None:
@@ -36,7 +35,7 @@ class BinaryTree:
             self.root = root
 
 
-def left_line(tree: BinaryTree):
+def left_line(tree: BinaryTree):  # praca domowa output only left line
     lista = []
     current = tree.root
     while current is not None:
