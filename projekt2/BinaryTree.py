@@ -1,6 +1,6 @@
 from typing import Any, Callable, Optional
 from projekt2.BinaryNode import BinaryNode
-import treelib
+import binarytree
 
 
 class BinaryTree:
@@ -16,17 +16,17 @@ class BinaryTree:
         self.root.traverse_pre_order(visit)
 
     def show(self) -> None:  # left is above right
-        t = treelib.Tree()  # implement in imported library
-        t.create_node(str(self.root.value), str(self.root.value))  # input tree root into Tree class
+        t = binarytree.tree()  # implement in imported library
+        t = binarytree.Node(self.root.value)
 
         def add(node: 'BinaryNode') -> None:  # function to input children of current node
             if node.right_child is not None:
-                t.create_node(str(node.right_child.value), str(node.right_child.value), parent=str(node.value))
+                t.right = binarytree.Node(node.right_child.value)
             if node.left_child is not None:
-                t.create_node(str(node.left_child.value), str(node.left_child.value), parent=str(node.value))
+                t.left = binarytree.Node(node.left_child.value)
 
         self.traverse_pre_order(add)  # input children of all nodes
-        t.show()
+        print(t)
 
     def __init__(self, value: Optional = None, root: BinaryNode = None) -> None:
         if root is None:
