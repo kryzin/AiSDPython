@@ -1,5 +1,5 @@
 from typing import Any, List, Callable, Union
-from projekt1 import Queue
+from project3.project1 import Queue
 
 
 class TreeNode:
