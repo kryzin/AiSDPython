@@ -1,33 +1,81 @@
 from project1 import Queue
 from typing import Any
 
+
 class Vertex:
     def __init__(self, data):
-        self.data: Any
+        self.id = data
+        self.adjacent = {}
 
-class Edge:
-    def __init__(self, source, destination):
-        self.source: Vertex
-        self.destination: Vertex
+    def __str__(self):
+        return str(self.id) + ' adjacent: ' + str([x.id for x in self.adjacent])
+
+    def get_connections(self):
+        return self.adjacent.keys()
+
+    def get_id(self):
+        return self.id
+
+    def add_neighbor(self, neighbor, weight=0):
+        self.adjacent[neighbor] = weight
 
 class Graph:
     def __init__(self):
-        self.graph = dict[Vertex, list(Edge)]
+        self.vert_dict = {}
+        self.num_vertices = 0
 
-    def create_vertex(self, data):
+    def __iter__(self):
+        return iter(self.vert_dict.values())
+
+    def add_vertex(self, data):
+        self.num_vertices = self.num_vertices + 1
         new_vertex = Vertex(data)
-        self.graph[new_vertex] = ()
+        self.vert_dict[data] = new_vertex
 
-    def add_edge(self, src, dest):
-        new_edge = Edge(src, dest)
+    def get_vertex(self, n):
+        if n in self.vert_dict:
+            return self.vert_dict[n]
+        else:
+            return None
 
-        list_src = self.graph.get(src)
-        list_src.append(dest)
-        self.graph[src] = list_src
+    def add_edge(self, frm, to, cost = 0):
+        if frm not in self.vert_dict:
+            self.add_vertex(frm)
+        if to not in self.vert_dict:
+            self.add_vertex(to)
 
-        list_dest = self.graph.get(dest)
-        list_dest.append(src)
-        self.graph[dest] = list_dest
+        self.vert_dict[frm].add_neighbor(self.vert_dict[to], cost)
+        self.vert_dict[to].add_neighbor(self.vert_dict[frm], cost)
+
+    def get_vertices(self):
+        return self.vert_dict.keys()
+# class Vertex:
+#     def __init__(self, data):
+#         self.data: Any
+#
+# class Edge:
+#     def __init__(self, source, destination):
+#         self.source: Vertex
+#         self.destination: Vertex
+#
+# class Graph:
+#     def __init__(self):
+#         self.graph = dict[Vertex, list(Edge)]
+#
+#     def create_vertex(self, data):
+#         new_vertex = Vertex(data)
+#         self.graph[new_vertex] = ()
+#
+#     def add_edge(self, src, dest):
+#         new_edge = Edge(src, dest)
+#
+#         list_src = self.graph.get(src)
+#         list_src.append(dest)
+#         self.graph[src] = list_src
+#
+#         list_dest = self.graph.get(dest)
+#         list_dest.append(src)
+#         self.graph[dest] = list_dest
 
 
     # def BFS(self, s):
@@ -103,10 +151,10 @@ class Graph:
     #         print(node, "t", dist[node])
 
 # Driver program to the above graph class
-graph = Graph
-graph.create_vertex('VI')
-graph.create_vertex('RU')
-graph.add_edge('VI', 'RU')
+graph = Graph()
+graph.add_vertex('VI')
+graph.add_vertex('a')
+graph.add_edge('VI', 'a', 0)
 
 # graph = Graph(V)
 # graph.add_edge(0, 1)
@@ -116,5 +164,3 @@ graph.add_edge('VI', 'RU')
 # graph.add_edge(1, 4)
 # graph.add_edge(2, 3)
 # graph.add_edge(3, 4)
-
-graph.print_graph()
