@@ -1,0 +1,28 @@
+digraph {
+	VI
+	CH
+	PA
+	KE
+	CO
+	RU
+	RA
+	SU
+	VI -> PA
+	VI -> CO
+	VI -> CH
+	VI -> RU
+	CH -> VI
+	PA -> VI
+	PA -> KE
+	PA -> CO
+	KE -> PA
+	CO -> VI
+	CO -> PA
+	CO -> RU
+	RU -> VI
+	RU -> CO
+	RU -> RA
+	RU -> SU
+	RA -> RU
+	SU -> RU
+}

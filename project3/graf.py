@@ -1,14 +1,15 @@
-from project1 import Queue
-from typing import Any
-
+import graphviz
 
 class Vertex:
-    def __init__(self, data):
-        self.id = data
-        self.adjacent = {}
+    def __init__(self, node):
+        self.id = node
+        self.adjacent = {}  # dictionary where keys=connected vertices, values=weight of edge
 
     def __str__(self):
-        return str(self.id) + ' adjacent: ' + str([x.id for x in self.adjacent])
+        return str(self.id)
+
+    def add_neighbor(self, neighbor, weight=0):
+        self.adjacent[neighbor] = weight
 
     def get_connections(self):
         return self.adjacent.keys()
@@ -16,21 +17,20 @@ class Vertex:
     def get_id(self):
         return self.id
 
-    def add_neighbor(self, neighbor, weight=0):
-        self.adjacent[neighbor] = weight
+    # def get_weight(self, neighbor):
+    #     return self.adjacent[neighbor]
 
 class Graph:
     def __init__(self):
-        self.vert_dict = {}
-        self.num_vertices = 0
+        self.vert_dict = {}  # dictionary where keys=vertex name, value=vertex adress
 
     def __iter__(self):
         return iter(self.vert_dict.values())
 
     def add_vertex(self, data):
-        self.num_vertices = self.num_vertices + 1
         new_vertex = Vertex(data)
         self.vert_dict[data] = new_vertex
+        return new_vertex
 
     def get_vertex(self, n):
         if n in self.vert_dict:
@@ -38,129 +38,86 @@ class Graph:
         else:
             return None
 
-    def add_edge(self, frm, to, cost = 0):
-        if frm not in self.vert_dict:
-            self.add_vertex(frm)
-        if to not in self.vert_dict:
-            self.add_vertex(to)
+    def add_edge(self, src, dest, cost = 0):  # src=source vetrex, dest=destination vertex
+        if src not in self.vert_dict:
+            self.add_vertex(src)
+        if dest not in self.vert_dict:
+            self.add_vertex(dest)
 
-        self.vert_dict[frm].add_neighbor(self.vert_dict[to], cost)
-        self.vert_dict[to].add_neighbor(self.vert_dict[frm], cost)
+        self.vert_dict[src].add_neighbor(self.vert_dict[dest], cost)
+        self.vert_dict[dest].add_neighbor(self.vert_dict[src], cost)
 
     def get_vertices(self):
         return self.vert_dict.keys()
-# class Vertex:
-#     def __init__(self, data):
-#         self.data: Any
-#
-# class Edge:
-#     def __init__(self, source, destination):
-#         self.source: Vertex
-#         self.destination: Vertex
-#
-# class Graph:
-#     def __init__(self):
-#         self.graph = dict[Vertex, list(Edge)]
-#
-#     def create_vertex(self, data):
-#         new_vertex = Vertex(data)
-#         self.graph[new_vertex] = ()
-#
-#     def add_edge(self, src, dest):
-#         new_edge = Edge(src, dest)
-#
-#         list_src = self.graph.get(src)
-#         list_src.append(dest)
-#         self.graph[src] = list_src
-#
-#         list_dest = self.graph.get(dest)
-#         list_dest.append(src)
-#         self.graph[dest] = list_dest
+
+    def show_graph(self):
+        dot = graphviz.Digraph(format='pdf')
+
+        for v in self.vert_dict.keys():
+            dot.node(v)
+
+        for v in self:
+            for w in v.get_connections():
+                vid = v.get_id()
+                wid = w.get_id()
+                dot.edge(vid,wid)
+
+        # dot.render(filename='test3.pdf',directory='graph_output', view=True, format='pdf')
+        # dot.render(directory='graph_output', view=True)
+        print(dot.source)
+
+def mutual_friends(g, f1, f0):
+    f1 = g.get_vertex(f1)
+    f0 = g.get_vertex(f0)
+
+    mutuals1 = list()
+    mutuals0 = list()
+
+    for v in f1.get_connections():
+        mutuals1.append(v.get_id())
+    for v in f0.get_connections():
+        mutuals0.append(v.get_id())
+
+    return list(set(mutuals1).intersection(set(mutuals0)))
 
 
-    # def BFS(self, s):
-    #
-    #     # Mark all the vertices as not visited
-    #     visited = [False] * (max(self.graph) + 1)
-    #
-    #     # Create a queue for BFS
-    #     queue = []
-    #
-    #     # Mark the source node as
-    #     # visited and enqueue it
-    #     queue.append(s)
-    #     visited[s] = True
-    #
-    #     while queue:
-    #
-    #         # Dequeue a vertex from
-    #         # queue and print it
-    #         s = queue.pop(0)
-    #         print(s, end=" ")
-    #
-    #         # Get all adjacent vertices of the
-    #         # dequeued vertex s. If a adjacent
-    #         # has not been visited, then mark it
-    #         # visited and enqueue it
-    #         for i in self.graph[s]:
-    #             if visited[i] == False:
-    #                 queue.append(i)
-    #                 visited[i] = True
-    #
-    # def DFSUtil(self, v, visited):
-    #
-    #     # Mark the current node as visited
-    #     # and print it
-    #     visited.add(v)
-    #     print(v, end=' ')
-    #
-    #     # Recur for all the vertices
-    #     # adjacent to this vertex
-    #     for neighbour in self.graph[v]:
-    #         if neighbour not in visited:
-    #             self.DFSUtil(neighbour, visited)
-    #
-    # # The function to do DFS traversal. It uses
-    # # recursive DFSUtil()
-    # def DFS(self, v):
-    #
-    #     # Create a set to store visited vertices
-    #     visited = set()
-    #
-    #     # Call the recursive helper function
-    #     # to print DFS traversal
-    #     self.DFSUtil(v, visited)
-    #
-    # def minDistance(self, dist, sptSet):
-    #
-    #     # Initialize minimum distance for next node
-    #     min = sys.maxsize
-    #
-    #     # Search not nearest vertex not in the
-    #     # shortest path tree
-    #     for v in range(self.V):
-    #         if dist[v] < min and sptSet[v] == False:
-    #             min = dist[v]
-    #             min_index = v
-    #
-    #     return min_index
-    #
-    # def printSolution(self, dist):
-    #     print("Vertex tDistance from Source")
-    #     for node in range(self.V):
-    #         print(node, "t", dist[node])
 
-# Driver program to the above graph class
-graph = Graph()
-graph.add_vertex('VI')
-graph.add_vertex('a')
-graph.add_edge('VI', 'a', 0)
+# implementacja zadania z task.txt
+g = Graph()
+g.add_vertex('VI')
+g.add_vertex('CH')
+g.add_vertex('PA')
+g.add_vertex('KE')
+g.add_vertex('CO')
+g.add_vertex('RU')
+g.add_vertex('RA')
+g.add_vertex('SU')
+g.add_edge('VI', 'PA')
+g.add_edge('VI', 'CO')
+g.add_edge('VI', 'CH')
+g.add_edge('VI', 'RU')
+g.add_edge('PA', 'KE')
+g.add_edge('PA', 'CO')
+g.add_edge('CO', 'RU')
+g.add_edge('RU', 'RA')
+g.add_edge('RU', 'SU')
+print(mutual_friends(g,'CO','VI'))
+g.show_graph()
 
-# graph = Graph(V)
-# graph.add_edge(0, 1)
-# graph.add_edge(0, 4)
-# graph.add_edge(1, 2)
-# graph.add_edge(1, 3)
-# graph.add_edge(1, 4)
-# graph.add_edge(2, 3)
-# graph.add_edge(3, 4)
+# implementacja testowego grafu
+g2 = Graph()
+g2.add_vertex('a')
+g2.add_vertex('b')
+g2.add_vertex('c')
+g2.add_vertex('d')
+g2.add_vertex('e')
+g2.add_vertex('f')
+g2.add_edge('a','c')
+g2.add_edge('a','d')
+g2.add_edge('b','c')
+g2.add_edge('b','d')
+g2.add_edge('a','e')
+g2.add_edge('b','f')
+print(mutual_friends(g2, 'a', 'b'))
+print(mutual_friends(g2, 'a', 'f'))
+g2.show_graph()
