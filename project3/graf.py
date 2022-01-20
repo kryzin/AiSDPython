@@ -50,6 +50,13 @@ class Graph:
     def get_vertices(self):
         return self.vert_dict.keys()
 
+    def print_connections(self):
+        for v in self:
+            for w in v.get_connections():
+                vid = v.get_id()
+                wid = w.get_id()
+                print('( %s , %s)' % (vid, wid))
+
     def show_graph(self):
         dot = graphviz.Digraph(format='pdf')
 
@@ -67,13 +74,13 @@ class Graph:
         print(dot.source)
 
 def mutual_friends(g, f1, f0):
-    f1 = g.get_vertex(f1)
+    f1 = g.get_vertex(f1)  # wskaźnik do szukanego wierzchołka, żeby można było pobrać listę połączeń
     f0 = g.get_vertex(f0)
 
     mutuals1 = list()
     mutuals0 = list()
 
-    for v in f1.get_connections():
+    for v in f1.get_connections():  # tworzymy listy połączeń dla obu wierzchołków
         mutuals1.append(v.get_id())
     for v in f0.get_connections():
         mutuals0.append(v.get_id())
@@ -101,8 +108,9 @@ g.add_edge('PA', 'CO')
 g.add_edge('CO', 'RU')
 g.add_edge('RU', 'RA')
 g.add_edge('RU', 'SU')
-print(mutual_friends(g,'CO','VI'))
-g.show_graph()
+print('lista mutual friends dla CO VI',mutual_friends(g,'CO','VI'))
+# g.print_connections()
+# g.show_graph()
 
 # implementacja testowego grafu
 g2 = Graph()
@@ -118,6 +126,27 @@ g2.add_edge('b','c')
 g2.add_edge('b','d')
 g2.add_edge('a','e')
 g2.add_edge('b','f')
-print(mutual_friends(g2, 'a', 'b'))
-print(mutual_friends(g2, 'a', 'f'))
-g2.show_graph()
+print('lista mutual friends dla a b',mutual_friends(g2, 'a', 'b'))
+print('lista mutual friends dla a f',mutual_friends(g2, 'a', 'f'))
+# g2.show_graph()
+
+# graf testowy nr 3
+g3 = Graph()
+g3.add_vertex('1')
+g3.add_vertex('2')
+g3.add_vertex('3')
+g3.add_vertex('4')
+g3.add_vertex('5')
+g3.add_vertex('6')
+g3.add_vertex('7')
+g3.add_edge('1','2')
+g3.add_edge('1','3')
+g3.add_edge('1','4')
+g3.add_edge('1','5')
+g3.add_edge('1','6')
+g3.add_edge('7','2')
+g3.add_edge('7','3')
+g3.add_edge('7','4')
+g3.add_edge('7','5')
+g3.add_edge('7','6')
+print('lista mutual friends dla 1 7',mutual_friends(g3,'1','7'))
